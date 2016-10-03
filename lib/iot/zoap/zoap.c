@@ -1059,3 +1059,13 @@ void zoap_header_set_id(struct zoap_packet *pkt, uint16_t id)
 
 	sys_put_be16(id, &appdata[2]);
 }
+
+uint8_t *zoap_next_token(void)
+{
+	static uint32_t rand[2];
+
+	rand[0] = sys_rand32_get();
+	rand[1] = sys_rand32_get();
+
+	return (uint8_t *) rand;
+}
