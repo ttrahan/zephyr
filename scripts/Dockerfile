@@ -70,3 +70,4 @@ RUN dpkg --add-architecture i386 \
  /tmp/* \
  /var/tmp/*
 
+RUN wget https://github.com/zephyrproject-rtos/meta-zephyr-sdk/releases/download/0.9/zephyr-sdk-0.9-setup.run && chmod +x zephyr-sdk-0.9-setup.run && ./zephyr-sdk-0.9-setup.run --quiet -- -d /opt/sdk/zephyr-sdk-0.9
