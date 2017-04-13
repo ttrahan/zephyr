@@ -10,6 +10,8 @@ env:
         - USE_CCACHE=1
     matrix:
         - ARCH=x86
+        - ARCH=x86
+        - ARCH=x86
           #- ARCH=arm
           #- ARCH=arc
           #- ARCH=nios2
