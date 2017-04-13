@@ -2,6 +2,13 @@ language: c
 
 compiler: gcc
 
+env:
+    - ARCH=x86
+    - ARCH=arm
+    - ARCH=arc
+    - ARCH=nios2
+    - ARCH=riscv32
+
 build:
     cache: true
     ci:
@@ -15,5 +22,4 @@ build:
       - test ${DOWNLOAD_SDK}=1 && chmod +x zephyr-sdk-0.9-setup.run
       - test ${DOWNLOAD_SDK}=1 &&  sudo ./zephyr-sdk-0.9-setup.run --quiet -- -d ${SHIPPABLE_BUILD_DIR}/zephyr-sdk-0.9
       - source zephyr-env.sh
-      - ./scripts/sanitycheck -a x86 --inline-logs
-      - test $?=1 && ./scripts/sanitycheck -a x86 --inline-logs --only-failed --outdir=out-2nd-pass
+      - ./scripts/sanitycheck -a x86 --inline-logs -T samples/basic || ./scripts/sanitycheck -T samples/basic -a ${ARCH} --inline-logs --only-failed --outdir=out-2nd-pass
