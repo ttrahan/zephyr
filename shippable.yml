@@ -1,0 +1,19 @@
+language: c
+
+compiler: gcc
+
+build:
+    cache: true
+    ci:
+      - export ZEPHYR_SDK_INSTALL_DIR=${SHIPPABLE_BUILD_DIR}/zephyr-sdk-0.9
+      - export ZEPHYR_GCC_VARIANT=zephyr
+      - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/.ccache
+      - export USE_CCACHE=1
+      - sudo apt-get install git make gcc g++ python3-ply ncurses-dev python-yaml python ccache
+      - test -d ${SHIPPABLE_BUILD_DIR}/zephyr-sdk-0.9 || export DOWNLOAD_SDK=1
+      - test ${DOWNLOAD_SDK}=1 && wget https://github.com/zephyrproject-rtos/meta-zephyr-sdk/releases/download/0.9/zephyr-sdk-0.9-setup.run
+      - test ${DOWNLOAD_SDK}=1 && chmod +x zephyr-sdk-0.9-setup.run
+      - test ${DOWNLOAD_SDK}=1 &&  sudo ./zephyr-sdk-0.9-setup.run --quiet -- -d ${SHIPPABLE_BUILD_DIR}/zephyr-sdk-0.9
+      - source zephyr-env.sh
+      - ./scripts/sanitycheck -a x86 --inline-logs
+      - test $?=1 && ./scripts/sanitycheck -a x86 --inline-logs --only-failed --outdir=out-2nd-pass
